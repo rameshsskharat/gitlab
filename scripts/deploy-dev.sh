@@ -8,5 +8,5 @@ oc create secret docker-registry gitlab-registry-secret1 \
   --docker-email=kharatramesh@gmai.com
 
 # envsubst < k8s/dev/deployment.yaml | oc apply -f -
-oc apply -f k8s/dev/
+oc apply -f k8s/
 oc set image deployment/ioclweb flask-app=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
