@@ -16,6 +16,7 @@ validate:
   trigger:
     include: .gitlab/pipelines/01-lint.yaml
     strategy: depend
+
 sast:
   stage: sast
   needs: 
@@ -23,6 +24,8 @@ sast:
   trigger:
     include: .gitlab/pipelines/02-sast.yaml
     strategy: depend
+
+
 unittest:
   stage: unittest
   needs:
@@ -30,6 +33,8 @@ unittest:
   trigger:
     include: .gitlab/pipelines/03-unittest.yaml
     strategy: depend
+
+
 buildimage:
   stage: buildimage
   needs: 
@@ -38,6 +43,8 @@ buildimage:
   trigger:
     include: .gitlab/pipelines/04-buildimage.yaml
     strategy: depend
+
+
 imagescan:
   stage: imagescan
   needs: 
@@ -47,6 +54,8 @@ imagescan:
   trigger:
     include: .gitlab/pipelines/05-imagescan.yaml
     strategy: depend
+
+
 deploy_dev:
   stage: deploy_dev
   needs: 
