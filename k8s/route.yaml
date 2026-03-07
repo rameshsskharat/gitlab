@@ -6,6 +6,6 @@ metadata:
 spec:
   to:
     kind: Service
-    name: flask-app
+    name: flask-app11
   port:
     targetPort: 8080
