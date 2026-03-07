@@ -1,0 +1,7 @@
+deploy-dev:
+  stage: deploy_dev
+  image: quay.io/openshift/origin-cli
+  script:
+    # - microdnf install gettext -y
+    - chmod +x scripts/deploy-dev.sh
+    - ./scripts/deploy-dev.sh

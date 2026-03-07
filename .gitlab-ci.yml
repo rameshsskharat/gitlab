@@ -1,0 +1,57 @@
+stages:
+- validate
+- sast
+- unittest
+- buildimage
+- imagescan
+- deploy_dev
+- dast
+- uat
+- prod
+variables:
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+
+validate:
+  stage: validate
+  trigger:
+    include: .gitlab/pipelines/lint.yaml
+    strategy: depend
+sast:
+  stage: sast
+  needs: 
+  - validate
+  trigger:
+    include: .gitlab/pipelines/sast.yaml
+    strategy: depend
+unittest:
+  needs:
+  - sast
+  trigger:
+    include: .gitlab/pipelines/unittest.yaml
+    strategy: depend
+buildimage:
+  stage: buildimage
+  needs: 
+  - unittest
+  - sast
+  trigger:
+    include: .gitlab/pipelines/buildimage.yaml
+    strategy: depend
+imagescan:
+  stage: imagescan
+  needs: 
+  - unittest
+  - sast
+  - buildimage
+  trigger:
+    include: .gitlab/pipelines/imagescan.yaml
+    strategy: depend
+deploy_dev:
+  stage: deploy_dev
+  needs: 
+    - unittest
+    - sast
+    - buildimage
+  trigger:
+    include: .gitlab/pipelines/deploy-dev.yaml
+    strategy: depend

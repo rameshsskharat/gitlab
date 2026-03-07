@@ -1,0 +1,12 @@
+include:
+  - template: Security/SAST.gitlab-ci.yml
+variables:
+  # Image produced in build stage
+  CS_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  
+  # Dockerfile location
+  CS_DOCKERFILE_PATH: docker/Dockerfile
+  
+
+  # Optional (debug)
+  SECURE_LOG_LEVEL: info

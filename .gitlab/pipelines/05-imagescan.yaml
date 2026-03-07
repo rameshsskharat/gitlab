@@ -1,0 +1,17 @@
+include:
+  - template: Security/Container-Scanning.gitlab-ci.yml
+variables:
+  # Image produced in build stage
+  CS_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+
+container_scan:
+  stage: scan
+  image:
+    name: aquasec/trivy:latest
+    entrypoint: [""]
+  variables:
+    TRIVY_USERNAME: $CI_REGISTRY_USER
+    TRIVY_PASSWORD: $CI_REGISTRY_PASSWORD
+  script:
+    # - trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - trivy image --scanners vuln --severity HIGH,CRITICAL  $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA

@@ -1,0 +1,7 @@
+lint:
+  stage: validate
+  image: python:3.10
+  script:
+    - pip install flake8
+    - flake8 app/
+    

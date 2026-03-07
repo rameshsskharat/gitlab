@@ -1,0 +1,6 @@
+unit-test:
+  stage: test
+  image: python:3.10
+  script:
+    - pip install -r app/requirements.txt
+    - pytest
