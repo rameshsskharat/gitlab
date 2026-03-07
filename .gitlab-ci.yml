@@ -24,6 +24,7 @@ sast:
     include: .gitlab/pipelines/sast.yaml
     strategy: depend
 unittest:
+  stage: unittest
   needs:
   - sast
   trigger:
