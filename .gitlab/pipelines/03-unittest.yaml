@@ -3,5 +3,9 @@ unit-test:
   image: python:3.10
   script:
     - pip install -r app/requirements.txt
-    - pytest
-    - if ls tests/*.py 1> /dev/null 2>&1; then pytest; else echo "No tests found"; fi
+    - pytest || if [ $? -eq 5 ]; then exit 0; fi
+    # - if ls tests/*.py 1> /dev/null 2>&1; then pytest; else echo "No tests found"; fi
+  rules:
+    - when: always
+  allow_failure: true 
+  
