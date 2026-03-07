@@ -5,7 +5,7 @@ variables:
   CS_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
 
 container_scan:
-  stage: scan
+  
   image:
     name: aquasec/trivy:latest
     entrypoint: [""]
