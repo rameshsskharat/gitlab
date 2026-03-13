@@ -1,0 +1,151 @@
+# GitLab CI/CD Runners Configuration Examples
+
+stages:
+  - build
+  - test
+  - deploy
+
+# Runner with specific tag
+build_job:
+  stage: build
+  tags:
+    - docker
+  script:
+    - echo "Building application"
+    - npm install
+    - npm run build
+
+# Runner with multiple tags (requires all tags)
+test_job:
+  stage: test
+  tags:
+    - docker
+    - linux
+  script:
+    - echo "Running tests"
+    - npm test
+
+# Runner with specific runner ID
+deploy_job:
+  stage: deploy
+  tags:
+    - deployment-runner
+  script:
+    - echo "Deploying application"
+    - ./deploy.sh
+
+# Runner with resource limits
+heavy_job:
+  stage: build
+  tags:
+    - high-performance
+  resource_group: production
+  script:
+    - echo "Heavy computation task"
+
+# Kubernetes runner example
+k8s_job:
+  stage: test
+  tags:
+    - kubernetes
+  image: alpine:latest
+  script:
+    - echo "Running on Kubernetes"
+
+# Windows runner example
+windows_job:
+  stage: build
+  tags:
+    - windows
+  script:
+    - echo "Building on Windows"
+    - call build.bat
+
+# Shell runner example
+shell_job:
+  stage: test
+  tags:
+    - shell
+  script:
+    - echo "Running shell commands"
+    - ./test.sh
+
+# Runner with specific executor type (defined in runner config)
+machine_runner_job:
+  stage: deploy
+  tags:
+    - machine-executor
+  script:
+    - echo "Running on machine executor"
+    # Runner with retry and timeout
+    retry_job:
+      stage: build
+      tags:
+        - docker
+      retry:
+        max: 2
+        when:
+          - runner_system_failure
+          - stuck_or_timeout_failure
+      timeout: 1h
+      script:
+        - echo "Task with retry and timeout"
+
+    # Runner with artifacts and cache
+    artifacts_job:
+      stage: build
+      tags:
+        - docker
+      cache:
+        paths:
+          - node_modules/
+          - .cache/
+        policy: pull-push
+      artifacts:
+        paths:
+          - dist/
+        expire_in: 30 days
+        reports:
+          junit: test-results.xml
+      script:
+        - npm install
+        - npm run build
+        - npm test
+
+    # Runner with environment and deployment
+    production_deploy:
+      stage: deploy
+      tags:
+        - deployment-runner
+      environment:
+        name: production
+        url: https://example.com
+        auto_stop_in: 1 week
+      when: manual
+      script:
+        - echo "Deploying to production"
+
+    # Runner with only/except conditions
+    conditional_job:
+      stage: test
+      tags:
+        - docker
+      only:
+        - merge_requests
+        - main
+      except:
+        - schedules
+      script:
+        - echo "Conditional execution"
+
+    # Runner with parallel matrix strategy
+    matrix_job:
+      stage: test
+      tags:
+        - docker
+      parallel:
+        matrix:
+          - NODE_VERSION: ["14", "16", "18"]
+            PACKAGE_MANAGER: ["npm", "yarn"]
+      script:
+        - echo "Testing with Node $NODE_VERSION and $PACKAGE_MANAGER"

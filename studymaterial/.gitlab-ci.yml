@@ -1,0 +1,23 @@
+variables:
+  # global variables
+  # predefined variable
+  CI_COMMIT_SHA: "$CI_COMMIT_SHA"
+  CI_COMMIT_REF_NAME: "$CI_COMMIT_REF_NAME"
+  CI_PROJECT_ID: "$CI_PROJECT_ID"
+  CI_PIPELINE_ID: "$CI_PIPELINE_ID"
+  dish: "samosa"
+
+understanding_variables:
+  image: alpine
+  # job level variables
+  variables:
+    dish: "vadapav"
+  script:
+  - echo "calling variable $CI_COMMIT_SHA"
+  - echo "calling variable $dish"
+understanding_variables1:
+  image: alpine
+  # job level variables
+  script:
+  - echo "calling variable $CI_COMMIT_SHA"
+  - echo "calling variable $dish"  
