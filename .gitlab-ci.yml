@@ -1,67 +1,23 @@
-stages:
-- validate
-- sast
-- unittest
-- buildimage
-- imagescan
-- deploy_dev
-- dast
-- uat
-- prod
 variables:
-  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  # global variables
+  # predefined variable
+  CI_COMMIT_SHA: "$CI_COMMIT_SHA"
+  CI_COMMIT_REF_NAME: "$CI_COMMIT_REF_NAME"
+  CI_PROJECT_ID: "$CI_PROJECT_ID"
+  CI_PIPELINE_ID: "$CI_PIPELINE_ID"
+  dish: "samosa"
 
-validate:
-  stage: validate
-  trigger:
-    include: .gitlab/pipelines/01-lint.yaml
-    strategy: depend
-
-sast:
-  stage: sast
-  needs: 
-  - validate
-  trigger:
-    include: .gitlab/pipelines/02-sast.yaml
-    strategy: depend
-
-
-unittest:
-  stage: unittest
-  needs:
-  - sast
-  trigger:
-    include: .gitlab/pipelines/03-unittest.yaml
-    strategy: depend
-
-
-buildimage:
-  stage: buildimage
-  needs: 
-  - unittest
-  - sast
-  trigger:
-    include: .gitlab/pipelines/04-buildimage.yaml
-    strategy: depend
-
-
-imagescan:
-  stage: imagescan
-  needs: 
-  - unittest
-  - sast
-  - buildimage
-  trigger:
-    include: .gitlab/pipelines/05-imagescan.yaml
-    strategy: depend
-
-
-deploy_dev:
-  stage: deploy_dev
-  needs: 
-    - unittest
-    - sast
-    - buildimage
-  trigger:
-    include: .gitlab/pipelines/06-deploy-dev.yaml
-    strategy: depend
+understanding_variables:
+  image: alpine
+  # job level variables
+  variables:
+    dish: "vadapav"
+  script:
+  - echo "calling variable $CI_COMMIT_SHA"
+  - echo "calling variable $dish"
+understanding_variables1:
+  image: alpine
+  # job level variables
+  script:
+  - echo "calling variable $CI_COMMIT_SHA"
+  - echo "calling variable $dish"  
