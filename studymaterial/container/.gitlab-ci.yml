@@ -1,0 +1,35 @@
+# define stages
+variables:
+  a: 10
+  dish: samosa
+
+stages:
+- build
+- test
+- deploy
+
+buildjob1:
+  
+  stage: build
+  image: alpine
+  script:
+  - echo "Build job1 executed--" $dish
+
+  
+testjob1:
+  image: alpine
+  stage: test
+  script:
+  - echo "test job1 executed----" 
+  - echo ${a}
+  needs:
+  - buildjob1
+ 
+
+deployjob1:
+  stage: deploy
+  script:
+  - echo "deploy job executed"
+  needs:
+  - testjob1
+  image: alpine
